@@ -2,8 +2,16 @@
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 800,
     "height": 450,
-    "title": "Global Water Scarcity and Usage",
+    "title": {
+        "text": "Global Water Stress (2024)",
+        "subtitle": "Categorized Water Stress Rankings by Country (Low to Extremely High)",
+        "fontSize": 18,
+        "subtitleFontSize": 14,
+        "anchor": "middle",
+        "color": "black"
+    },
     "projection": {"type": "equalEarth"},
+    "background": "lightblue",
     "data": {
         "url": "ne_110m.json",
         "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
@@ -16,7 +24,7 @@
                     "url": "data/country_water_stress_ranking.csv"
                 },
                 "key": "name_0",
-                "fields": ["cat", "score", "indicator_name"]
+                "fields": ["cat", "score", "indicator_name", "un_region", "wb_region"]
             }
         },
         {
@@ -31,15 +39,23 @@
             "type": "ordinal",
             "scale": {
                 "domain": ["No Data", "Low", "Low-Medium", "Medium-High", "High", "Extremely High"],
-                "range": ["lightgray", "lightblue", "blue", "darkblue", "navy", "black"]
+                "range": ["lightgray", "#ffffcc", "#ffeda0", "#feb24c", "#f03b20", "#bd0026"]
             },
-            "title": "Water Usage Score"
+            "legend": {
+                "title": "Water Stress Levels (2024)",
+                "orient": "bottom-left",
+                "labelFontSize": 11,
+                "titleFontSize": 13,
+                "fillColor": null  
+            }
         },
         "tooltip": [
             {"field": "properties.NAME", "title": "Country", "type": "nominal"},
-            {"field": "category", "title": "Category", "type": "ordinal"},
-            {"field": "score", "title": "Score", "type": "quantitative"},
-            {"field": "indicator_name", "title": "Indicator", "type": "nominal"}
+            {"field": "category", "title": "Water Stress Category", "type": "ordinal"},
+            {"field": "score", "title": "Water Stress Score (0-5)", "type": "quantitative"},
+            {"field": "indicator_name", "title": "Water Stress Indicator", "type": "nominal"},
+            {"field": "un_region", "title": "UN Region", "type": "nominal"},
+            {"field": "wb_region", "title": "World Bank Region", "type": "nominal"}
         ]
     }
 }
