@@ -1,0 +1,127 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 500,
+  "background": "rgb(57, 78, 83)",
+  "data": {
+    "url": "data/freshwater_use_by_aggregated_region.csv"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "interpolate": "monotone",
+        "tooltip": true,
+        "stroke": "white",  
+        "strokeWidth": 1   
+      },
+      "params": [
+        {
+          "name": "hover_area",  
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "axis": {
+            "title": "Year",
+            "labelColor": "white",
+            "titleColor": "white"
+          }
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "Freshwater use",
+          "type": "quantitative",
+          "stack": "center",
+          "axis": {
+            "title": "Freshwater Use",
+            "labelColor": "white",
+            "titleColor": "white"
+          }
+        },
+        "color": {
+          "field": "Entity",
+          "type": "nominal",
+          "legend": {
+            "title": "Region",
+            "titleColor": "white",
+            "labelColor": "white"
+          },
+          "scale": {
+            "scheme": "pastel1"
+          }
+        },
+        "tooltip": [
+          {"field": "Entity", "type": "nominal", "title": "Region"},
+          {"field": "Year", "type": "temporal", "title": "Year"},
+          {"field": "Freshwater use", "type": "quantitative", "title": "Freshwater Use"}
+        ],
+        "opacity": {
+          "condition": {
+            "param": "hover_area", 
+            "value": 1
+          },
+          "value": 0.5
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "red",
+        "strokeWidth": 2
+      },
+      "params": [
+        {
+          "name": "hover_rule", 
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "datum": 1970,
+          "type": "temporal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 5,
+        "dy": -150,
+        "color": "red"
+      },
+      "encoding": {
+        "x": {
+          "datum": 1970,
+          "type": "temporal"
+        },
+        "y": {
+          "datum": 1e12
+        },
+        "text": {"value": "Significant Year (1970)"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "labelColor": "white",
+      "titleColor": "white"
+    }
+  }
+}

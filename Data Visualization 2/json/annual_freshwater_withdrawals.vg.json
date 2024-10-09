@@ -1,0 +1,441 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 500,
+  "background": "rgb(57, 78, 83)",
+  "params": [
+    {
+      "name": "Year_selection",
+      "value": 2020,
+      "bind": {
+        "input": "range",
+        "min": 1975,
+        "max": 2020,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "zoom_level",
+      "value": 180,
+      "bind": {
+        "input": "range",
+        "min": 100,
+        "max": 300,
+        "step": 10,
+        "name": "Zoom: "
+      }
+    }
+  ],
+  "projection": {
+    "type": "equalEarth",
+    "scale": {"expr": "zoom_level"}
+  },
+  "layer": [
+    {
+      "data": {
+        "graticule": true
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "gray",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#ddd",
+        "stroke": "white",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/annual_freshwater_withdrawals.csv"
+      },
+      "transform": [
+        {
+          "lookup": "Entity",
+          "from": {
+            "data": {
+              "url": "data/ne_110m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "ne_110m_admin_0_countries"
+              }
+            },
+            "key": "properties.NAME"
+          },
+          "as": "geo"
+        },
+        {
+          "filter": "datum.Year == Year_selection"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "none"
+      },
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "Annual freshwater withdrawals, total (billion cubic meters)",
+          "type": "quantitative",
+          "title": "Water Use (Billion m³)",
+          "scale": {
+            "type": "log",
+            "domain": [1e6, 1e12],
+            "range": [
+              "#e0f7fa",
+              "#b2ebf2",
+              "#80deea",
+              "#4dd0e1",
+              "#26c6da",
+              "#00acc1",
+              "#00838f",
+              "#006064"
+            ]
+          },
+          "legend": {
+            "title": "Water Use (Million/Billion m³)",
+            "orient": "right",
+            "format": ".2s",
+            "values": [1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12],
+            "labelExpr": "datum.value >= 1e9 ? (datum.value / 1e9) + ' billion m³' : (datum.value / 1e6) + ' million m³'",
+            "labelColor": "white",
+            "titleColor": "white"
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "value": 1
+          },
+          "value": 0.2
+        },
+        "tooltip": [
+          {"field": "Entity", "type": "nominal", "title": "Country"},
+          {
+            "field": "Annual freshwater withdrawals, total (billion cubic meters)",
+            "type": "quantitative",
+            "title": "Freshwater Withdrawals (Billion m³)",
+            "format": ","
+          },
+          {"field": "Year", "type": "quantitative", "title": "Year"}
+        ]
+      },
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Canada'"
+        },
+        {
+          "calculate": "split('Canada utilizes vast freshwater resources,\\n a key for both agriculture and energy production.', '\\n')",
+          "as": "annotationText"
+        },
+        {
+          "calculate": "-180",
+          "as": "longitude"
+        },
+        {
+          "calculate": "36",
+          "as": "latitude"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": 0,
+        "color": "white" 
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "text": {
+          "field": "annotationText"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Canada'"
+        },
+        {
+          "calculate": "-110",
+          "as": "longitude"
+        },
+        {
+          "calculate": "60",
+          "as": "latitude"
+        },
+        {
+          "calculate": "-180",
+          "as": "longitude2"
+        },
+        {
+          "calculate": "40",
+          "as": "latitude2"
+        },
+        {
+          "calculate": "datum.properties.NAME",
+          "as": "annotationText"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "white", 
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "longitude2": {
+          "field": "longitude2"
+        },
+        "latitude2": {
+          "field": "latitude2"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Malaysia'"
+        },
+        {
+          "calculate": "split('Malaysia faces increasing water stress due to rising demand,\\n urbanization, and uneven distribution of freshwater resources.', '\\n')",
+          "as": "annotationText"
+        },
+        {
+          "calculate": "180",
+          "as": "longitude"
+        },
+        {
+          "calculate": "22",
+          "as": "latitude"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": 0,
+        "color": "white",
+        "fontSize": 9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "text": {
+          "field": "annotationText"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Malaysia'"
+        },
+        {
+          "calculate": "103",
+          "as": "longitude"
+        },
+        {
+          "calculate": "5",
+          "as": "latitude"
+        },
+        {
+          "calculate": "145",
+          "as": "longitude2"
+        },
+        {
+          "calculate": "16",
+          "as": "latitude2"
+        },
+        {
+          "calculate": "datum.properties.NAME",
+          "as": "annotationText"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "longitude2": {
+          "field": "longitude2"
+        },
+        "latitude2": {
+          "field": "latitude2"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Australia'"
+        },
+        {
+          "calculate": "split('Australia faces challenges in managing its \\nlimited freshwater for agriculture and industry.', '\\n')",
+          "as": "annotationText"
+        },
+        {
+          "calculate": "180",
+          "as": "longitude"
+        },
+        {
+          "calculate": "-50",
+          "as": "latitude"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": 0,
+        "color": "white"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "text": {
+          "field": "annotationText"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Australia'"
+        },
+        {
+          "calculate": "133",
+          "as": "longitude"
+        },
+        {
+          "calculate": "-22",
+          "as": "latitude"
+        },
+        {
+          "calculate": "165",
+          "as": "longitude2"
+        },
+        {
+          "calculate": "-47",
+          "as": "latitude2"
+        },
+        {
+          "calculate": "datum.properties.NAME",
+          "as": "annotationText"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "white", 
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "longitude2": {
+          "field": "longitude2"
+        },
+        "latitude2": {
+          "field": "latitude2"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null  
+    }
+  }
+}
