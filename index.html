@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+    <script src="vega_lite_vis1.js"></script>
+    <script src="vega_lite_vis2.js"></script>
+    <script src="vega_lite_vis3.js"></script>
+    <script src="vega_lite_vis4.js"></script>
+    <script src="vega_lite_vis5.js"></script>
+    <script src="vega_lite_vis6.js"></script>
+    <script src="vega_lite_vis7.js"></script>
+
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
+</head>
+
+<body>
+    <div>
+        <h1 id="title">Water Use and Stress</h1>
+    </div>
+    <div class="vis_1">
+        <p><b style="font-size: 1.3em;">Global freshwater withdrawals</b> have increased dramatically over the past century, 
+            rising approximately <b style="font-size: 1.2em;">six-fold since 1900</b>, with a sharp rise from the 1950s onwards. 
+            By <b style="font-size: 1.2em;">2020</b>, total withdrawals reached around <b style="font-size: 1.2em;">4,000 billion cubic meters</b>, 
+            indicating a <b style="font-size: 1.2em;">plateauing trend</b> since 2000, reflecting growing awareness of water scarcity. 
+            Regions like <b style="font-size: 1.2em;">North America</b> and <b style="font-size: 1.2em;">Asia</b> dominate in usage, 
+            with countries like <b style="font-size: 1.2em;">India</b> and <b style="font-size: 1.2em;">China</b> exceeding <b style="font-size: 1.2em;">1,000 billion cubic meters each</b>, 
+            underscoring the urgent need for sustainable water management practices to mitigate water stress.</p>
+
+        <h1 id="idioms_title">Global Annual Freshwater Withdrawals (Billion Cubic Meters) (1975-2020)</h1>
+        <div id="annual_freshwater_withdrawals"></div>
+    </div>
+    
+    <div class="divider"></div>
+
+    <div class="vis_6">
+        <h1 id="idioms_title">How Is Freshwater Usage Changing Across Global Regions Over Time?</h1>
+        <div id="freshwater_use_by_aggregated_region"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="vis_2">
+        <div class="vis2-left-section">
+            <h1 id="idioms_title">Renewable Water Resources Per Capita Over Time</h1>
+            <p><b style="font-size: 1.3em;">Iceland</b> leads with over <b style="font-size: 1.3em;">800,000 cubic meters</b>
+                 of water per capita, followed by <b style="font-size: 1.3em;">Guyana</b> and <b style="font-size: 1.3em;">Suriname</b>
+                  with over <b style="font-size: 1.3em;">600,000 cubic meters</b>, while countries like <b style="font-size: 1.3em;">Venezuela</b>
+                   and <b style="font-size: 1.3em;">Malaysia</b> show significantly lower water resources.The global average has stabilized at about 
+                   <b style="font-size: 1.3em;">6,000 m³ per capita</b>, highlighting the critical need for sustainable water management as 
+                   global freshwater availability comes under increasing pressure.
+            </p>
+
+        </div>
+        <div class="vis2-right-section">
+            <div id="renewable_freshwater_resources"></div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="vis_3">
+        <h1 id="idioms_title">Global Water Stress (2024)</h1>
+        <h2>Categorized Water Stress Rankings by Country (Low to Extremely High)</h2>
+        <div id="country_water_stress_ranking"></div>
+        <p>
+            Water access is a growing concern. 
+            <b style="font-size:20px;">India, the Middle East, and Mexico</b> face extreme water stress in red, risking lives. 
+            <b style="font-size:20px;">Southern Europe and South America</b> show high to medium stress in orange and yellow. 
+            <b style="font-size:20px;">Africa and Oceania</b> have low stress, but grey areas in Africa signal <b style="font-size:20px;">data gaps and hidden issues</b>. 
+            This map highlights the <b style="font-size:20px;">urgent global water crisis</b>.
+        </p>            
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="vis_4">
+        <div class="vis4-left-section">
+            <div id="agricultural_water_withdrawals_vs_gdp_per_capita"></div>
+            <button id="pauseButton">Pause</button>
+        </div>
+        <div class="vis4-right-section">
+            <h1 id="idioms_title">Agricultural Water Withdrawals vs. GDP Per Capita by Continent</h1>
+            <p>
+                On average, <b style="font-size:20px;">53.6% of freshwater</b> is used for farming, ranging from <b style="font-size:20px;">0.15%</b> to <b style="font-size:20px;">98.43%</b> in different areas. Economically, <b style="font-size:20px;">GDP per capita</b> varies from <b style="font-size:20px;">$1,260</b> to <b style="font-size:20px;">$111,879</b>, with wealthier nations often using water more efficiently. This highlights the need for <b style="font-size:20px;">sustainable agricultural practices</b> to protect our planet while maintaining food production.
+            </p>            
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="vis_5">
+        
+        <h1 id="idioms_title">Water use of food products</h1>
+        <h2>Freshwater withdrawals per kilogram of food product</h2>
+        <div id="water_withdrawals_per_kg_poore"></div>
+        <p>
+            <b style="font-size:20px;">Beef (beef herd)</b> requires the most water, using significantly more than <b style="font-size:20px;">15,000 liters</b> of water per kilogram <b style="font-size:20px;">!!!</b>
+        </p>
+    </div>
+
+    <div class="metadata">
+        <div class="left-section">
+            <p>Created by: Ong Chong How<br>
+            Contact: <a href="mailto:ongch0417@gmail.com" style="color: lightblue;">ongch0417@gmail.com</a><br>
+            Last updated: 10 October 2024</p>
+        </div>
+        <div class="right-section">
+            <p>© 2024 Ong Chong How. All rights reserved.</p>
+            <p>Data source:<br>
+            <a href="https://ourworldindata.org/water-use-stresse" style="color: lightblue;">Our World in Data</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

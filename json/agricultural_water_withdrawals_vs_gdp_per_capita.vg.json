@@ -1,0 +1,169 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 400,
+  "background": "rgb(57, 78, 83)",
+  "padding": {"left": 15, "right": 15, "top": 20, "bottom": 15},
+  "data": {
+    "url": "data/agricultural_water_withdrawals_with_continents.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum['Annual freshwater withdrawals, agriculture (% of total freshwater withdrawal)'] != null && datum['GDP per capita, PPP (constant 2017 international $)'] != null && datum.Continent != null && datum.Continent != '' && datum.Entity != null"
+    },
+    {
+      "filter": "datum.Year == Year_selection"
+    },
+    {
+      "filter": "continentSelector == 'All' || datum.Continent == continentSelector"
+    },
+    {
+      "calculate": "datum['GDP per capita, PPP (constant 2017 international $)'] > 60000 ? 'High GDP' : 'Low/Medium GDP'",
+      "as": "GDP Category"
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "GDP_Rank"
+        }
+      ],
+      "groupby": ["Year_selection", "Continent"]
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "Water_Use_Rank"
+        }
+      ],
+      "groupby": ["Year_selection", "Continent"]
+    }
+  ],
+  "params": [
+    {
+      "name": "Year_selection",
+      "value": 1991,
+      "bind": {
+        "input": "range",
+        "min": 1991,
+        "max": 2020,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "continentSelector",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "Africa", "Asia", "Europe", "North America", "Oceania", "South America"],
+        "name": "Select Continent: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 200,
+        "shape": "circle",
+        "opacity": 0.85
+      },
+      "encoding": {
+        "x": {
+          "field": "GDP per capita, PPP (constant 2017 international $)",
+          "type": "quantitative",
+          "title": "GDP Per Capita ($)",
+          "axis": {
+            "labelFontSize": 14,
+            "titleFontSize": 16,
+            "grid": true,
+            "gridColor": "#CCCCCC",  
+            "labelColor": "#FFFFFF", 
+            "titleColor": "#FFFFFF"
+          },
+          "scale": {
+            "domain": [0, 120000],
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "Annual freshwater withdrawals, agriculture (% of total freshwater withdrawal)",
+          "type": "quantitative",
+          "title": "Agricultural Water Use (%)",
+          "axis": {
+            "labelFontSize": 14,
+            "titleFontSize": 16,
+            "grid": true,
+            "gridColor": "#CCCCCC", 
+            "labelColor": "#FFFFFF",
+            "titleColor": "#FFFFFF"
+          },
+          "scale": {
+            "domain": [0, 100],
+            "zero": false
+          }
+        },
+        "color": {
+          "field": "Continent",
+          "type": "nominal",
+          "title": "Continent",
+          "scale": {
+            "domain": ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"],
+            "range": ["#FFA07A", "#98FB98", "#ADD8E6", "#FFB6C1", "#FFD700", "#87CEFA"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "titleFontSize": 14,
+            "labelFontSize": 12,
+            "symbolSize": 200,
+            "title": "Continents",
+            "symbolStrokeWidth": 2,
+            "labelColor": "#FFFFFF",
+            "titleColor": "#FFFFFF"
+          }
+        },
+        "tooltip": [
+          { "field": "Entity", "type": "nominal", "title": "Country" },
+          { "field": "GDP per capita, PPP (constant 2017 international $)", "type": "quantitative", "title": "GDP ($)" },
+          { "field": "Annual freshwater withdrawals, agriculture (% of total freshwater withdrawal)", "type": "quantitative", "title": "Water Use (%)" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 7,
+        "dy": -7,
+        "fontSize": 12,
+        "font": "Verdana"
+      },
+      "encoding": {
+        "text": { "field": "Entity" },
+        "x": {
+          "field": "GDP per capita, PPP (constant 2017 international $)",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Annual freshwater withdrawals, agriculture (% of total freshwater withdrawal)",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Continent",
+          "type": "nominal"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.GDP_Rank <= 5 || datum.Water_Use_Rank <= 5"
+        }
+      ]
+    }
+  ],
+  "config": {
+    "axis": { "grid": true, "gridColor": "#CCCCCC" }
+  }
+}
