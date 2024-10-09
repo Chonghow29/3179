@@ -1,0 +1,112 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Global Freshwater Use Over the Long Run",
+  "width": 800,
+  "height": 600,
+  "params": [
+    {
+      "name": "entitySelection",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All", 
+          "Brazil, Russia, India, China, and South Africa (BRICS)", 
+          "Organisation for Economic Co-operation and Development (OECD)", 
+          "Rest of the World (ROW)", 
+          "Global Total (World)"
+        ],
+        "name": "Select group or region: "
+      }
+    }
+  ],
+  "data": {
+    "url": "data/global-freshwater-use-over-the-long-run.csv"
+  },
+  "transform": [
+    {
+      "filter": {
+        "field": "Entity",
+        "oneOf": ["BRICS", "OECD", "ROW", "World"]
+      }
+    },
+    {
+      "filter": "entitySelection === 'All' || (entitySelection === 'Brazil, Russia, India, China, and South Africa (BRICS)' && datum.Entity === 'BRICS') || (entitySelection === 'Organisation for Economic Co-operation and Development (OECD)' && datum.Entity === 'OECD') || (entitySelection === 'Rest of the World (ROW)' && datum.Entity === 'ROW') || (entitySelection === 'Global Total (World)' && datum.Entity === 'World')"
+    },
+    {
+      "calculate": "datum.Year == 2000 ? 'Significant Event' : ''",
+      "as": "eventNote"
+    }
+  ],
+  "layer": [
+    {
+      "mark": "area",
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "title": "Year"
+        },
+        "y": {
+          "field": "Freshwater use",
+          "type": "quantitative",
+          "title": "Freshwater use (m³)"
+        },
+        "color": {
+          "field": "Entity",
+          "type": "nominal",
+          "legend": { "title": "Entity" }
+        },
+        "tooltip": [
+          { "field": "Year", "type": "temporal", "title": "Year" },
+          {
+            "field": "Freshwater use",
+            "type": "quantitative",
+            "title": "Freshwater Use (m³)",
+            "format": ",.0f"
+          },
+          { "field": "eventNote", "type": "nominal", "title": "Note" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "red",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "datum": 2000
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "dy": -5,
+        "color": "black"
+      },
+      "encoding": {
+        "x": {
+          "datum": 2000
+        },
+        "y": {
+          "field": "Freshwater use",
+          "type": "quantitative",
+          "aggregate": "mean"
+        },
+        "text": {
+          "value": "Significant Event"
+        }
+      }
+    }
+  ],
+  "config": {
+    "title": {
+      "font": "sans-serif",
+      "fontSize": 14
+    }
+  }
+}
