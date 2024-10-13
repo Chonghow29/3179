@@ -98,24 +98,25 @@
           "type": "quantitative",
           "title": "Water Use (Billion m³)",
           "scale": {
-            "type": "log",
-            "domain": [1e6, 1e12],
-            "range": [
-            "#d8f3dc",
-            "#b7e4d8",
-            "#95d5b2",
-            "#74c69d",
-            "#52b788",
-            "#40916c",
-            "#2d6a4f",
-            "#1b4332"
+            "type": "threshold",
+          "domain": [1e6, 1e7, 1e8, 1e9, 1e10, 5e10, 1e11, 5e11, 1e12],
+          "range": [
+            "#e9f9e6",
+            "#c6ecc3",
+            "#a1dca4",
+            "#7bc484",
+            "#52a66b",
+            "#3f744f",
+            "#2d6445",
+            "#1d4b33",
+            "#0d3e23"
           ]
           },
           "legend": {
             "title": "Water Use (Million/Billion m³)",
             "orient": "right",
             "format": ".2s",
-            "values": [1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12],
+            "values": [1e6, 1e7, 1e8, 1e9, 1e10, 5e10, 1e11, 5e11, 1e12],
             "labelExpr": "datum.value >= 1e9 ? (datum.value / 1e9) + ' billion m³' : (datum.value / 1e6) + ' million m³'",
             "labelColor": "white",
             "titleColor": "white"
