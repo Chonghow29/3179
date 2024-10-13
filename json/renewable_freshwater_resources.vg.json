@@ -1,0 +1,119 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 500,
+  "height": 500,
+  "padding": 5,
+  "signals": [
+    {"name": "padAngle", "value": 0.03},
+    {"name": "bandPadding", "value": 0.1},
+    {"name": "innerRadius", "value": 60},
+    {"name": "hoverType", "value": null, "on": [{"events": "arc:mouseover", "update": "datum.Type"}, {"events": "arc:mouseout", "update": "null"}]}
+  ],
+  "data": [
+    {
+      "name": "source",
+      "url": "data/renewable_water_resources_top10_viz.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "table",
+      "source": "source",
+      "transform": [
+        {
+          "type": "window",
+          "sort": {"field": "Total_Number", "order": "descending"},
+          "ops": ["row_number"],
+          "as": ["rank"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "typeScale",
+      "type": "band",
+      "paddingInner": {"signal": "bandPadding"},
+      "range": [{"signal": "innerRadius"}, {"signal": "width / 2 - 10"}],
+      "domain": {
+        "data": "table",
+        "field": "Type",
+        "sort": {"field": "Total_Number", "order": "descending"}
+      }
+    },
+    {
+      "name": "angleScale",
+      "type": "linear",
+      "range": [0, {"signal": "1.5 * PI"}],
+      "domain": {"data": "table", "field": "Total_Number"}
+    },
+    {
+      "name": "colorScale",
+      "type": "ordinal",
+      "domain": {
+        "data": "table",
+        "field": "Type",
+        "sort": {"field": "Total_Number", "order": "descending"}
+      },
+      "range": ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+    }
+  ],
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width / 2"},
+          "y": {"signal": "height / 2"},
+          "stroke": {"value": "#f0f0f0"},
+          "strokeWidth": {"value": 1.5},
+          "cornerRadius": {"value": 10}
+        },
+        "update": {
+          "fill": {"scale": "colorScale", "field": "Type"},
+          "startAngle": {"value": 0},
+          "endAngle": {"scale": "angleScale", "field": "Total_Number"},
+          "padAngle": {"signal": "padAngle"},
+          "innerRadius": {"scale": "typeScale", "field": "Type"},
+          "outerRadius": {
+            "scale": "typeScale",
+            "field": "Type",
+            "offset": {"scale": "typeScale", "band": 1}
+          },
+          "tooltip": {
+            "signal": "datum.Type + ': ' + format(datum.Total_Number, ',.2f') + ' cubic meters'"
+          },
+          "opacity": [
+            {"test": "datum.Type === hoverType", "value": 1},
+            {"value": 0.6}
+          ]
+        },
+        "hover": {
+          "opacity": {"value": 1}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width / 2", "offset": -5},
+          "y": {"signal": "height / 2", "offset": -25},
+          "radius": {"scale": "typeScale", "field": "Type", "offset": -15},
+          "theta": {"signal": "datum.startAngle + datum.endAngle / 2"},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "text": {"signal": "datum.Type"},
+          "fill": {"value": "#ffffff"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fontFamily": {"value": "Arial, sans-serif"},
+          "dx": {"value": 2},
+          "dy": {"value": 2}
+        }
+      }
+    }
+  ],
+  "legends": null
+}

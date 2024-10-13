@@ -1,0 +1,219 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Dataviz by Jessica Angeline Tjandra: https://www.linkedin.com/in/davbacci/",
+  "autosize": "pad",
+  "width": {"signal": "group1Width+group2Width+group3Width"},
+  "height": 600,
+  "padding-right": 100,
+  "signals": [
+    {"name": "group1Width", "update": "130"},
+    {"name": "group2Width", "update": "100"},
+    {"name": "group3Width", "update": "350"},
+    {"name": "innerScaleSize", "update": "4"},
+    {"name": "fixedBarLength", "value": 300}
+  ],
+  "data": [
+    {
+      "name": "table",
+      "url": "data/Top_10_Food_Types_by_Freshwater_Withdrawals.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"Estimated Population": "number"},
+        "delimiter": ","
+      },
+      "transform": [
+        {
+          "type": "collect", 
+          "sort": {"field": "Freshwater withdrawals per kilogram (Poore & Nemecek, 2018)", "order": "descending"}
+        },
+        {"type": "window", "ops": ["rank"], "as": ["rank"]},
+        {"type": "filter", "expr": "datum.rank <= 12"}
+      ]
+    },
+    {
+      "name": "linkTable",
+      "source": ["table"],
+      "transform": [
+        {
+          "type": "formula",
+          "as": "shadow",
+          "expr": "'M ' + group1Width + ' '  + scale('y', datum['Food']) + ' L '+ scale('x', 0) + ' '+ scale('yInner', datum['Food']) + ' L ' + scale('x', 0) + ' '  + (scale('yInner', datum['Food'])+bandwidth('yInner'))  + ' L  ' + group1Width + ' '  + (scale('y', datum['Food'])+bandwidth('y'))     "
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "table", "field": "Freshwater withdrawals per kilogram (Poore & Nemecek, 2018)"},
+      "nice": true,
+      "range": {
+        "signal": "[group1Width+group2Width,group1Width+group2Width+group3Width]"
+      }
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "table",
+        "field": "Food",
+        "sort": {
+          "field": "Freshwater withdrawals per kilogram (Poore & Nemecek, 2018)",
+          "op": "min",
+          "order": "descending"
+        }
+      },
+      "type": "band",
+      "paddingInner": 0.1,
+      "range": "height"
+    },
+    {
+      "name": "yInner",
+      "domain": {
+        "data": "table",
+        "field": "Food",
+        "sort": {
+          "field": "Freshwater withdrawals per kilogram (Poore & Nemecek, 2018)",
+          "op": "min",
+          "order": "descending"
+        }
+      },
+      "type": "band",
+      "paddingInner": 0.1,
+      "range": {
+        "signal": "[height/innerScaleSize, height-(height/innerScaleSize)]"
+      }
+    },
+    {
+      "name": "colour",
+      "type": "ordinal",
+      "range": {"scheme": "category10"},
+      "domain": {"data": "table", "field": "Food"}
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "name": "outerBars",
+      "encode": {
+        "enter": {
+          "x": {"value": 0},
+          "x2": {"signal": "group1Width"},
+          "y": {"scale": "y", "field": "Food"},
+          "height": {"scale": "y", "band": 1}
+        },
+        "update": {
+          "fill": [
+            {
+              "test": "datum.rank == 2 || datum.rank == 4 || datum.rank == 6 || datum.rank == 8 || datum.rank == 10",
+              "value": "#87CEEB"
+            },
+            {"value": "#A9A9A9"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "shadows",
+      "from": {"data": "linkTable"},
+      "encode": {
+        "update": {
+          "strokeWidth": {"value": 0},
+          "path": {"signal": "datum.shadow"},
+          "fill": [
+            {
+              "test": "datum.rank == 4 || datum.rank == 6 || datum.rank == 2 || datum.rank == 8 || datum.rank == 10 ",
+              "value": "#87CEEB"
+            },
+            {"value": "#A9A9A9"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "name": "innerBars",
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "value": 0},
+          "x2": {"signal": "group1Width+group2Width+fixedBarLength"},
+          "y": {"scale": "yInner", "field": "Food"},
+          "height": {"scale": "yInner", "band": 1},
+          "fill": [
+            {
+              "test": "datum.rank == 4 || datum.rank == 6 || datum.rank == 2 || datum.rank == 8 || datum.rank == 10 ",
+              "value": "#87CEEB" 
+            },
+            {"value": "#A9A9A9"}
+          ],
+          "strokeWidth": {"value": 0},
+          "stroke": [
+            {
+              "test": "datum.rank == 4 || datum.rank == 6 || datum.rank == 2 || datum.rank == 8 || datum.rank == 10 ",
+              "value": "#87CEEB"
+            },
+            {"value": "#A9A9A9"}
+          ],
+          "cornerRadiusTopRight": {"value": 3},
+          "cornerRadiusBottomRight": {"value": 3}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "ranks",
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "text": {"signal": "datum.rank"},
+          "fill": {"signal": "'#f1f1f1'"},
+          "font": {"value": "Impact"},
+          "fontSize": {"value": 55},
+          "y": {
+            "signal": "scale('y', datum['Food'])+bandwidth('y')/2"
+          },
+          "baseline": {"value": "middle"},
+          "align": {"value": "center"},
+          "x": {"signal": "group1Width/2"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "names",
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "fill": {"signal": "'white'"},
+          "text": {"field": "Food"},
+          "x": {"signal": "group1Width + group2Width + fixedBarLength - 10"}, 
+          "fontWeight": {"value": "bold"},
+          "align": {"value": "right"},
+          "y": {
+            "signal": "scale('yInner', datum['Food'])+bandwidth('y')/4.5"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "speed",
+      "from": {"data": "names"},
+      "encode": {
+        "update": {
+          "fill": {"signal": "'white'"},
+          "text": {"signal": "format(datum.datum['Freshwater withdrawals per kilogram (Poore & Nemecek, 2018)'], ',') + ' liters/kg'"},
+          "x": {"signal": "group1Width + group2Width + fixedBarLength - 10"}, 
+          "fontWeight": {"value": "normal"},
+          "align": {"value": "right"},
+          "y": {"signal": "datum.y"},
+          "dy": {"value": 10}
+        }
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "red", "strokeWidth": 2}}
+}

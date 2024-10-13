@@ -1,0 +1,238 @@
+/* styles.css */
+body {
+    background-color: dimgray;
+    color: #FFD700;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#title {
+    font-size: 72px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+}
+
+.vis_1 p {
+    font-size: 16px; 
+    line-height: 1.6; 
+    margin: 40px 413px; 
+    color: #FFD700;
+    text-align: justify; 
+    font-family: sans-serif;
+}
+
+#idioms_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.divider {
+    height: 4px;
+    border: none;
+    border-top: 2px solid rgba(255, 215, 0, 0.7);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.7); 
+    margin: 30px 0; 
+    width: 100%; 
+}
+
+.vis_2 {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+    padding-top: 30px;
+}
+
+.vis2-left-section {
+    width: 50%; 
+    padding-left: 50px;
+    margin-top: 20px;
+    margin-right: 150px;
+}
+
+.vis2-right-section {
+    width: 50%;
+}
+
+.vis_2 p {
+    word-spacing: 5px;
+    margin-top: 80px;
+    padding-left: 100px;
+    padding-right: 100px;
+    font-size: 16px;
+    line-height: 1.6; 
+    color: #FFD700;
+    text-align: justify;
+    font-family: 'Arial', sans-serif; /* Change font type */
+}
+
+.vis_2 h1 {
+    word-spacing: 5px;
+    margin-top: 80px;
+    padding-left: 27px;
+    padding-right: 27px;
+    font-size: 32px;
+}
+
+.vis_3 h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 100;
+}
+
+.vis_3 p {
+    font-size: 16px; 
+    line-height: 1.6; 
+    margin: 20px 0px; 
+    color: #FFD700;
+    text-align: justify; 
+    font-family: 'Arial', sans-serif; 
+}
+
+.vis_4, .vis_5{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+    padding-top: 30px;
+}
+
+.vis4-left-section {
+    width: 70%; 
+}
+
+.vis4-right-section {
+    width: 30%;
+    padding-right: 10px;
+    padding-top: 20px;
+}
+
+.vis_4 p {
+    font-size: 16px; 
+    line-height: 1.6; 
+    margin: 90px 0px; 
+    color: #FFD700;
+    text-align: justify; 
+    font-family: 'Arial', sans-serif; 
+}
+
+#pauseButton {
+    margin-top: 10px; /* Added margin at the top */
+    padding: 8px 20px; /* Reduced padding for a smaller button */
+    background-image: linear-gradient(135deg, #34568B 30%, #1D3557 90%); /* Professional deep blue gradient */
+    color: white;
+    border: none;
+    border-radius: 25px; /* Smaller rounded corners */
+    font-size: 12px; /* Smaller font size */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);  /* Slight shadow for depth */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    outline: none;
+}
+
+#pauseButton:hover {
+    background-image: linear-gradient(135deg, #1D3557 30%, #35373c 90%); /* Darker blue on hover */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+#pauseButton:active {
+    background-image: linear-gradient(135deg, #152238 30%, #32363b 90%); /* Even darker blue when clicked */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Reset shadow */
+    transform: translateY(1px); /* Button moves down slightly when clicked */
+}
+
+#pauseButton:focus {
+    box-shadow: 0 0 0 3px rgba(52, 86, 139, 0.4); /* Subtle focus ring */
+}
+
+.vis5-left-section {
+    width: 40%; 
+}
+
+.vis5-right-section {
+    width: 66%;
+}
+
+.vis_5 h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    padding-top: 100px;
+    padding-left: 40px;
+}
+
+.vis_5 h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 100;
+    padding-left: 40px;
+}
+
+.vis_5 p {
+    padding-left: 90px;
+    padding-right: 60px;
+    font-size: 17px; 
+    line-height: 1.6; 
+    margin: 90px 0px; 
+    color: #FFD700;
+    text-align: justify; 
+    font-family: 'Arial', sans-serif; 
+}
+
+#water_withdrawals_per_kg_poore {
+    padding-left: 200px;
+}
+
+#annual_freshwater_withdrawals,
+#country_water_stress_ranking,
+#renewable_freshwater_resources,
+#agricultural_water_withdrawals_vs_gdp_per_capita,
+#water_withdrawals_per_kg_poore,
+#freshwater_use_by_aggregated_region {
+    width: 100%; /* Make the map take full width */
+    height: 500px; /* Set a height for the visualization */
+}
+
+.metadata {
+    position: fixed; /* Fixes the div to the bottom */
+    bottom: 0; /* Aligns it to the bottom of the page */
+    left: 0; /* Aligns it to the left of the page */
+    right: 0; /* Aligns it to the right of the page */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    padding: 5px; /* Padding for better spacing */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between left and right sections */
+    font-size: 10px;
+}
+.left-section {
+    text-align: left; /* Aligns text to the left */
+}
+.right-section {
+    text-align: right; /* Aligns text to the right */
+}

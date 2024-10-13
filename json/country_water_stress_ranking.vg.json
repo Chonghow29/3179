@@ -1,0 +1,294 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 500,
+  "background": "dimgray",
+  "params": [
+    {
+      "name": "zoom_level",
+      "value": 180,
+      "bind": {
+        "input": "range",
+        "min": 100,
+        "max": 300,
+        "step": 10,
+        "name": "Zoom: "
+      }
+    }
+  ],
+  "projection": {
+    "type": "equalEarth",
+    "scale": {"expr": "zoom_level"}
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+        "format": {"type": "topojson", "feature": "oceans"}
+      },
+      "mark": {"type": "geoshape", "fill": "#b9d8f6"}
+    },
+    {
+      "data": {
+        "graticule": true
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "gray",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.NAME",
+          "from": {
+            "data": {
+              "url": "data/country_water_stress_ranking.csv"
+            },
+            "key": "name_0",
+            "fields": ["cat", "score", "indicator_name", "un_region", "wb_region"]
+          }
+        },
+        {
+          "calculate": "datum.cat === '0' ? 'Low' : datum.cat === '1' ? 'Low-Medium' : datum.cat === '2' ? 'Medium-High' : datum.cat === '3' ? 'High' : datum.cat === '4' ? 'Extremely High' : 'No Data'",
+          "as": "category"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "none"
+      },
+      "encoding": {
+        "color": {
+          "field": "category",
+          "type": "ordinal",
+          "scale": {
+            "domain": ["No Data", "Low", "Low-Medium", "Medium-High", "High", "Extremely High"],
+            "range": ["lightgray", "#ffffcc", "#ffeda0", "#feb24c", "#f03b20", "#bd0026"]
+          },
+          "legend": {
+            "title": "Water Stress Levels",
+            "orient": "bottom",
+            "labelColor": "white",
+            "titleColor": "white"
+          }
+        },
+        "tooltip": [
+          {"field": "properties.NAME", "title": "Country", "type": "nominal"},
+          {"field": "category", "title": "Water Stress Category", "type": "ordinal"},
+          {"field": "score", "title": "Water Stress Score (0-5)", "type": "quantitative"},
+          {"field": "indicator_name", "title": "Water Stress Indicator", "type": "nominal"},
+          {"field": "un_region", "title": "UN Region", "type": "nominal"},
+          {"field": "wb_region", "title": "World Bank Region", "type": "nominal"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Malaysia'"
+        },
+        {
+          "calculate": "split('Malaysia is facing increasing water stress due to rapid urbanization,\\n rising demand, and uneven distribution of water resources.', '\\n')",
+          "as": "annotationText"
+        },
+        {
+          "calculate": "180",
+          "as": "longitude"
+        },
+        {
+          "calculate": "22",
+          "as": "latitude"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": 0,
+        "color": "black",
+        "fontSize": 9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "text": {
+          "field": "annotationText"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Malaysia'"
+        },
+        {
+          "calculate": "103",
+          "as": "longitude"
+        },
+        {
+          "calculate": "5",
+          "as": "latitude"
+        },
+        {
+          "calculate": "145",
+          "as": "longitude2"
+        },
+        {
+          "calculate": "16",
+          "as": "latitude2"
+        },
+        {
+          "calculate": "datum.properties.NAME",
+          "as": "annotationText"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "black",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "longitude2": {
+          "field": "longitude2"
+        },
+        "latitude2": {
+          "field": "latitude2"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Australia'"
+        },
+        {
+          "calculate": "split('Australia is experiencing significant water stress,\\n exacerbated by recurring droughts and its arid climate.', '\\n')",
+          "as": "annotationText"
+        },
+        {
+          "calculate": "180",
+          "as": "longitude"
+        },
+        {
+          "calculate": "-50",
+          "as": "latitude"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 0,
+        "dy": 0,
+        "color": "black",
+        "fontSize": 9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "text": {
+          "field": "annotationText"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME == 'Australia'"
+        },
+        {
+          "calculate": "145",
+          "as": "longitude"
+        },
+        {
+          "calculate": "-25",
+          "as": "latitude"
+        },
+        {
+          "calculate": "180",
+          "as": "longitude2"
+        },
+        {
+          "calculate": "-40",
+          "as": "latitude2"
+        },
+        {
+          "calculate": "datum.properties.NAME",
+          "as": "annotationText"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "black",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude"
+        },
+        "latitude": {
+          "field": "latitude"
+        },
+        "longitude2": {
+          "field": "longitude2"
+        },
+        "latitude2": {
+          "field": "latitude2"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null  
+    }
+  }
+}
