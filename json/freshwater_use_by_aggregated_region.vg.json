@@ -6,6 +6,12 @@
   "data": {
     "url": "data/freshwater_use_by_aggregated_region.csv"
   },
+  "transform": [
+    {
+      "calculate": "datum.Entity === 'BRICS' ? 'Brazil, Russia, India, China, South Africa (BRICS)' : datum.Entity === 'ROW' ? 'Rest of the World (ROW)' : datum.Entity === 'USA' ? 'United States (USA)' : datum.Entity === 'EU' ? 'European Union (EU)' : datum.Entity === 'OECD' ? 'Organisation for Economic Co-operation and Development (OECD)' : datum.Entity",
+      "as": "FullEntity"
+    }
+  ],
   "layer": [
     {
       "mark": {
@@ -47,19 +53,25 @@
           }
         },
         "color": {
-          "field": "Entity",
+          "field": "FullEntity",
           "type": "nominal",
           "legend": {
             "title": "Region",
             "titleColor": "white",
-            "labelColor": "white"
+            "labelColor": "white",
+            "orient": "bottom",
+            "labelLimit": 500,  
+            "symbolLimit": 500, 
+            "labelFontSize": 12, 
+            "labelFont": "Arial", 
+            "titleFontSize": 14
           },
           "scale": {
             "scheme": "pastel1"
           }
         },
         "tooltip": [
-          {"field": "Entity", "type": "nominal", "title": "Region"},
+          {"field": "FullEntity", "type": "nominal", "title": "Region"},
           {"field": "Year", "type": "temporal", "title": "Year"},
           {"field": "Freshwater use", "type": "quantitative", "title": "Freshwater Use","format": ",.0f"}
         ],
