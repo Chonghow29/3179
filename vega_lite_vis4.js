@@ -22,7 +22,7 @@ function toggleAnimation(view) {
         year = 1991;  // Loop back to 1991 when it reaches 2020
       }
       updateYear(view, year);
-    }, 1000);  // Change the year every 1000ms
+    }, 800);
     button.textContent = "Pause";  // Change button text to Pause
   } else {
     // Pause the animation
@@ -45,7 +45,7 @@ vegaEmbed("#agricultural_water_withdrawals_vs_gdp_per_capita", vg_4).then(functi
       year = 1991;  // Loop back to 1991 when it reaches 2020
     }
     updateYear(view, year);
-  }, 800);  // Change the year every 1000ms (adjust the speed if needed)
+  }, 800);
 
   // Add event listener to the button to toggle the pause and resume
   document.getElementById("pauseButton").addEventListener("click", () => {
